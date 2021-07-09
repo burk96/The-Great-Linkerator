@@ -24,6 +24,64 @@ async function createLink({ url, clickCount, comment }) {
   }
 }
 
+async function getLinks() {
+  try {
+    const { rows } = await client.query(
+      `
+      SELECT * FROM links;
+    `
+    );
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getLinkById(id) {
+  try {
+    const {
+      rows: [link],
+    } = await client.query(
+      `
+      SELECT * FROM links
+      WHERE id = $1;
+    `,
+      [id]
+    );
+
+    return link;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function destroyLink(id) {
+  try {
+    await client.query(
+      `
+      DELETE FROM link_tags
+      WHERE "linksId" = $1;
+    `,
+      [id]
+    );
+
+    const {
+      rows: [link],
+    } = await client.query(
+      `
+      DELETE FROM links
+      WHERE id = $1;
+    `,
+      [id]
+    );
+
+    return link;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createTag({ name }) {
   try {
     const {
@@ -36,6 +94,60 @@ async function createTag({ name }) {
     `,
       [name]
     );
+
+    return tag;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getTags() {
+  try {
+    const { rows } = await client.query(
+      `
+      SELECT * FROM tags;
+    `
+    );
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function createLinkTags({ linksId, tagsId }) {
+  try {
+    const {
+      rows: [linkTag],
+    } = await client.query(
+      `
+      INSERT INTO link_tags("linksId", "tagsId")
+      VALUES($1, $2)
+      RETURNING *;
+    `,
+      [linksId, tagsId]
+    );
+
+    return linkTag;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getLinksWithTags(linksId) {
+  try {
+    const { rows } = await client.query(
+      `
+      SELECT links.url, links.clickCount, links.comment, links.date, tags.name AS tagName
+      FROM link_tags
+      JOIN links ON link_tags."linksId" = links.id
+      JOIN tags ON link_tags."tagsId" = tags.id
+      WHERE links.id = $1;
+    `,
+      [linksId]
+    );
+
+    return rows;
   } catch (error) {
     throw error;
   }
@@ -45,5 +157,11 @@ async function createTag({ name }) {
 module.exports = {
   client,
   createLink,
+  getLinks,
+  getLinkById,
+  destroyLink,
   createTag,
+  getTags,
+  createLinkTags,
+  getLinksWithTags,
 };

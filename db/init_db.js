@@ -2,8 +2,10 @@
 const {
   client,
   createLink,
+  getLinks,
   createTag,
-  // other db methods
+  getTags,
+  createLinkTags,
 } = require("./index");
 
 async function buildTables() {
@@ -86,8 +88,35 @@ async function populateInitialTagData() {
   }
 }
 
+async function populateInitialLinkTagData() {
+  try {
+    const [youtube, twitter, ytmnd] = await getLinks();
+    const [social, funny, epic] = await getTags();
+
+    const linkTags = [
+      {
+        linksId: youtube.id,
+        tagsId: funny.id,
+      },
+      {
+        linksId: twitter.id,
+        tagsId: social.id,
+      },
+      {
+        linksId: ytmnd.id,
+        tagsId: epic.id,
+      },
+    ];
+
+    await Promise.all(linkTags.map(createLinkTags));
+  } catch (error) {
+    throw error;
+  }
+}
+
 buildTables()
   .then(populateInitialData)
   .then(populateInitialTagData)
+  .then(populateInitialLinkTagData)
   .catch(console.error)
   .finally(() => client.end());
