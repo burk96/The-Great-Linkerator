@@ -11,7 +11,6 @@ const {
 } = require("../db/index.js");
 
 //GET
-
 apiRouter.get("/", (req, res, next) => {
   res.send({
     message: "API is under construction!",
@@ -21,43 +20,49 @@ apiRouter.get("/", (req, res, next) => {
 apiRouter.get("/alllinks", async (req, res, next) => {
   const result = await getLinks();
 
-  res.send({
-    allLinks: result,
-  });
+  res.send(result);
 });
 
 apiRouter.get("/alltags", async (req, res, next) => {
   const result = await getTags();
 
-  res.send({
-    allTags: result,
-  });
+  res.send(result);
 });
 
-apiRouter.get("/linkswithtags/:linkId", async (req, res, next) => {
+apiRouter.get("/link/:linkId", async (req, res, next) => {
   const { linkId } = req.params;
 
   const result = await getLinksWithTags(linkId);
 
-  res.send({
-    link: result,
-  });
+  res.send(result);
 });
 
 //POST
-
-apiRouter.post("", async (req, res, next) => {
+apiRouter.post("/newlink", async (req, res, next) => {
   const { url, clickCount, comment } = req.body;
 
   const result = await createLink({ url, clickCount, comment });
 
-  res.send({
-    newLink: result,
-  });
+  res.send(result);
+});
+
+apiRouter.post("/newtag", async (req, res, next) => {
+  const { name } = req.body;
+
+  const result = await createTag({ name });
+
+  res.send(result);
 });
 
 //PATCH
 
 //DELETE
+apiRouter.delete("/link/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  const result = await destroyLink(id);
+
+  res.send(result);
+});
 
 module.exports = apiRouter;
