@@ -27,18 +27,18 @@ async function buildTables() {
         clickCount INT NOT NULL,
         comment VARCHAR(255) NOT NULL,
         date DATE DEFAULT CURRENT_DATE
-      )
+      );
 
       CREATE TABLE tags(
         id SERIAL PRIMARY KEY,
         name VARCHAR(255)
-      )
+      );
 
       CREATE TABLE link_tags(
         id SERIAL PRIMARY KEY,
         "linksId" INT REFERENCES links("id") NOT NULL,
         "tagsId" INT REFERENCES tags("id") NOT NULL
-      )
+      );
     `);
   } catch (error) {
     throw error;
@@ -83,6 +83,8 @@ async function populateInitialTagData() {
     ];
 
     await Promise.all(initialTags.map(createTag));
+
+    console.log("Tags Created");
   } catch (error) {
     throw error;
   }
@@ -109,6 +111,8 @@ async function populateInitialLinkTagData() {
     ];
 
     await Promise.all(linkTags.map(createLinkTags));
+
+    console.log("LinkTag Relations Created");
   } catch (error) {
     throw error;
   }
