@@ -1,28 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import {
-  getSomething
-} from '../api';
+import { getLinks, getTags, getLinksWithTags } from "../api";
 
 const App = () => {
-  const [message, setMessage] = useState('');
+  const [links, setLinks] = useState([]);
 
   useEffect(() => {
-    getSomething()
-      .then(response => {
-        setMessage(response.message);
+    Promise.all([getLinks()])
+      .then(([links]) => {
+        setLinks(links);
       })
-      .catch(error => {
-        setMessage(error.message);
-      });
-  });
+      .catch(console.error);
+  }, []);
 
   return (
     <div className="App">
       <h1>Hello, World!</h1>
-      <h2>{ message }</h2>
+      <h2>
+        {links.map((link) => {
+          return <div>{link.url}</div>;
+        })}
+      </h2>
     </div>
   );
-}
+};
 
 export default App;

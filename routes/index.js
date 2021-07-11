@@ -17,19 +17,19 @@ apiRouter.get("/", (req, res, next) => {
   });
 });
 
-apiRouter.get("/alllinks", async (req, res, next) => {
+apiRouter.get("/links", async (req, res, next) => {
   const result = await getLinks();
 
   res.send(result);
 });
 
-apiRouter.get("/alltags", async (req, res, next) => {
+apiRouter.get("/tags", async (req, res, next) => {
   const result = await getTags();
 
   res.send(result);
 });
 
-apiRouter.get("/link/:linkId", async (req, res, next) => {
+apiRouter.get("/links/:linkId", async (req, res, next) => {
   const { linkId } = req.params;
 
   const result = await getLinksWithTags(linkId);
@@ -38,7 +38,7 @@ apiRouter.get("/link/:linkId", async (req, res, next) => {
 });
 
 //POST
-apiRouter.post("/newlink", async (req, res, next) => {
+apiRouter.post("/links", async (req, res, next) => {
   const { url, clickCount, comment } = req.body;
 
   const result = await createLink({ url, clickCount, comment });
@@ -46,7 +46,7 @@ apiRouter.post("/newlink", async (req, res, next) => {
   res.send(result);
 });
 
-apiRouter.post("/newtag", async (req, res, next) => {
+apiRouter.post("/tags", async (req, res, next) => {
   const { name } = req.body;
 
   const result = await createTag({ name });
@@ -57,7 +57,7 @@ apiRouter.post("/newtag", async (req, res, next) => {
 //PATCH
 
 //DELETE
-apiRouter.delete("/link/:id", async (req, res, next) => {
+apiRouter.delete("/links/:id", async (req, res, next) => {
   const { id } = req.params;
 
   const result = await destroyLink(id);
