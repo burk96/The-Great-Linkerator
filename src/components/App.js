@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { getLinks, getTags, getLinksWithTags } from "../api";
+import NavBar from "./NavBar.js";
+import Links from "./Links.js";
+import Tags from "./Tags.js";
 
 const App = () => {
-  const [links, setLinks] = useState([]);
-
-  useEffect(() => {
-    Promise.all([getLinks()])
-      .then(([links]) => {
-        setLinks(links);
-      })
-      .catch(console.error);
-  }, []);
-
   return (
-    <div className="App">
-      <h1>Hello, World!</h1>
-      <h2>
-        {links.map((link) => {
-          return <div>{link.url}</div>;
-        })}
-      </h2>
-    </div>
+    <Router>
+      <Switch>
+        <div className="App">
+          <NavBar />
+          <Route exact path="/links">
+            <Links />
+          </Route>
+          <Route exact path="/tags">
+            <Tags />
+          </Route>
+        </div>
+      </Switch>
+    </Router>
   );
 };
 
