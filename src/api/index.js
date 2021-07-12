@@ -5,6 +5,8 @@ export async function getLinks() {
     let { data } = await axios.get("/api/links");
 
     //Gotta admit, I really don't like this
+    //I've had so many problems with function
+    //I've rewritten it multiple times and it just gets worse...
     data.forEach(async (link) => {
       const [result] = await getLinksWithTags(link.id);
       const { tagname } = result || "None";
