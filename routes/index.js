@@ -39,7 +39,7 @@ apiRouter.get("/links/:linkId", async (req, res, next) => {
 
 //POST
 apiRouter.post("/links", async (req, res, next) => {
-  const { url, clickCount, comment } = req.body;
+  const { url, clickCount = 0, comment } = req.body;
 
   const result = await createLink({ url, clickCount, comment });
 

@@ -1,16 +1,9 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from "reactstrap";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,15 +13,29 @@ const NavBar = () => {
   return (
     <div className="NavBar">
       <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/">Linkerator</NavbarBrand>
+        <Link
+          to={"/"}
+          style={{
+            textDecoration: "none",
+            color: "white",
+            fontWeight: "bold",
+            margin: "0.5rem",
+          }}
+        >
+          Linkerator
+        </Link>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav>
             <NavItem>
-              <NavLink href="/links">Links</NavLink>
+              <Link to={"/links"} style={{ marginLeft: "1rem" }}>
+                Links
+              </Link>
             </NavItem>
             <NavItem>
-              <NavLink href="/tags">Tags</NavLink>
+              <Link to={"/tags"} style={{ marginLeft: "1rem" }}>
+                Tags
+              </Link>
             </NavItem>
           </Nav>
         </Collapse>

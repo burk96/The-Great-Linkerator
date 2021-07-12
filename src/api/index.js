@@ -5,9 +5,9 @@ export async function getLinks() {
     let { data } = await axios.get("/api/links");
 
     data.forEach(async (link) => {
-      const [url] = await getLinksWithTags(link.id);
-      const { tagname } = url;
-      link.tags = tagname;
+      const [result] = await getLinksWithTags(link.id);
+      const { tagname } = result || "None";
+      link.tags = tagname ? tagname : "None";
     });
 
     return data;
@@ -31,6 +31,19 @@ export async function getLinksWithTags(id) {
     const { data } = await axios.get(`/api/links/${id}`);
 
     return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function createLink(url, comment) {
+  try {
+    if (!url || !comment) {
+      return false;
+    }
+    await axios.post("/api/links", { url, comment });
+
+    return true;
   } catch (error) {
     throw error;
   }

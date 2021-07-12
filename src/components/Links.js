@@ -1,13 +1,22 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Card, CardText, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+import {
+  Card,
+  CardText,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Button,
+} from "reactstrap";
 
 import { getLinks } from "../api";
 
 const Links = (props) => {
   const { links, setLinks } = props;
+  const history = useHistory();
 
   useEffect(() => {
     Promise.all([getLinks()])
@@ -21,6 +30,15 @@ const Links = (props) => {
   return (
     <div className="Links">
       <h1 className="display-3">Links</h1>
+      <Button
+        color="primary"
+        onClick={() => {
+          history.push("/newlink");
+        }}
+      >
+        New Link
+      </Button>
+
       {links.map((link) => {
         console.log(link);
         return (
