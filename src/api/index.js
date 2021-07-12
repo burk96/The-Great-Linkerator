@@ -4,6 +4,7 @@ export async function getLinks() {
   try {
     let { data } = await axios.get("/api/links");
 
+    //Gotta admit, I really don't like this
     data.forEach(async (link) => {
       const [result] = await getLinksWithTags(link.id);
       const { tagname } = result || "None";
@@ -41,7 +42,22 @@ export async function createLink(url, comment) {
     if (!url || !comment) {
       return false;
     }
+
     await axios.post("/api/links", { url, comment });
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function createTag(name) {
+  try {
+    if (!name) {
+      return false;
+    }
+
+    await axios.post("/api/tags", { name });
 
     return true;
   } catch (error) {

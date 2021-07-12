@@ -35,12 +35,12 @@ const Links = (props) => {
         onClick={() => {
           history.push("/newlink");
         }}
+        style={{ margin: "1rem" }}
       >
         New Link
       </Button>
 
       {links.map((link) => {
-        console.log(link);
         return (
           <Card style={{ margin: "2rem" }} key={link.id}>
             <CardBody>

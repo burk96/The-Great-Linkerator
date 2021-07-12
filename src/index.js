@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { Links, Tags, NavBar, Home, CreateLink } from "./components";
+import { Links, Tags, NavBar, Home, CreateLink, CreateTag } from "./components";
 
 const App = () => {
   const [links, setLinks] = useState([]);
@@ -21,6 +21,9 @@ const App = () => {
         </Route>
         <Route path={"/tags"}>
           <Tags tags={tags} setTags={setTags} />
+        </Route>
+        <Route path={"/newtag"}>
+          <CreateTag />
         </Route>
         <Route path={"/"} exact>
           <Home />

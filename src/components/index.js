@@ -3,3 +3,4 @@ export { default as Tags } from "./Tags.js";
 export { default as NavBar } from "./NavBar.js";
 export { default as Home } from "./Home.js";
 export { default as CreateLink } from "./CreateLink.js";
+export { default as CreateTag } from "./CreateTag.js";

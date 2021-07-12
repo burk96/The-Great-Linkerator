@@ -18,7 +18,6 @@ const CreateLink = () => {
         onSubmit={async (event) => {
           event.preventDefault();
 
-          console.log(link, comment);
           try {
             await createLink(link, comment);
             history.push("/links");
