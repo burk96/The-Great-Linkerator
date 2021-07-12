@@ -1,10 +1,14 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
-
 export async function getLinks() {
   try {
-    const { data } = await axios.get(`${BASE_URL}/links`);
+    let { data } = await axios.get("/api/links");
+
+    data.forEach(async (link) => {
+      const [url] = await getLinksWithTags(link.id);
+      const { tagname } = url;
+      link.tags = tagname;
+    });
 
     return data;
   } catch (error) {
@@ -14,7 +18,7 @@ export async function getLinks() {
 
 export async function getTags() {
   try {
-    const { data } = await axios.get(`${BASE_URL}/tags`);
+    const { data } = await axios.get("/api/tags");
 
     return data;
   } catch (error) {
@@ -24,7 +28,7 @@ export async function getTags() {
 
 export async function getLinksWithTags(id) {
   try {
-    const { data } = await axios.get(`${BASE_URL}/links/${id}`);
+    const { data } = await axios.get(`/api/links/${id}`);
 
     return data;
   } catch (error) {

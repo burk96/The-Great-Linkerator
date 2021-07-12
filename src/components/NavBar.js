@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 
 const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -6,8 +6,8 @@ import { Card, CardText, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 
 import { getLinks } from "../api";
 
-const Links = () => {
-  const [links, setLinks] = useState([]);
+const Links = (props) => {
+  const { links, setLinks } = props;
 
   useEffect(() => {
     Promise.all([getLinks()])
@@ -15,22 +15,25 @@ const Links = () => {
         setLinks(links);
       })
       .catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="Links">
+      <h1 className="display-3">Links</h1>
       {links.map((link) => {
+        console.log(link);
         return (
-          <Card>
+          <Card style={{ margin: "2rem" }} key={link.id}>
             <CardBody>
               <CardTitle>
                 URL: <a href={link.url}>{link.url}</a>
               </CardTitle>
               <CardSubtitle>Comment: {link.comment}</CardSubtitle>
-            </CardBody>
-            <CardBody>
-              <CardText>Clicks: {link.clickCount}</CardText>
+              <hr />
+              <CardText>Clicks: {link.clickcount}</CardText>
               <CardText>Date: {link.date}</CardText>
+              <CardText>Tags: {link.tags}</CardText>
             </CardBody>
           </Card>
         );
