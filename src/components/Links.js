@@ -43,7 +43,7 @@ const Links = (props) => {
 
       {links
         .sort((a, b) => {
-          return a.id - b.id;
+          return b.clickcount - a.clickcount;
         })
         .map((link) => {
           return (

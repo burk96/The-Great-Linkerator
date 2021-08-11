@@ -40,7 +40,11 @@ apiRouter.get('/links/:linkId', async (req, res, next) => {
 
 //POST
 apiRouter.post('/links', async (req, res, next) => {
-  const { url, clickCount = 0, comment } = req.body;
+  let { url, clickCount = 0, comment } = req.body;
+
+  if (!url.startsWith('http')) {
+    url = 'https://' + url;
+  }
 
   const result = await createLink({ url, clickCount, comment });
 
