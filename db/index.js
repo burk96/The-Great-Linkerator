@@ -1,7 +1,8 @@
 // Connect to DB
-const { Client } = require("pg");
-const DB_NAME = "linkerator";
-const DB_URL = process.env.DATABASE_URL || `postgres://localhost:5432/${DB_NAME}`;
+const { Client } = require('pg');
+const DB_NAME = 'linkerator';
+const DB_URL =
+  process.env.DATABASE_URL || `postgres://localhost:5432/${DB_NAME}`;
 const client = new Client(DB_URL);
 
 // database methods
@@ -11,10 +12,10 @@ async function createLink({ url, clickCount, comment }) {
       rows: [link],
     } = await client.query(
       `
-      INSERT INTO links(url, clickCount, comment)
-      VALUES($1, $2, $3)
-      RETURNING *;
-    `,
+        INSERT INTO links(url, clickCount, comment)
+        VALUES($1, $2, $3)
+        RETURNING *;
+      `,
       [url, clickCount, comment]
     );
 
@@ -29,7 +30,7 @@ async function getLinks() {
     const { rows } = await client.query(
       `
       SELECT * FROM links;
-    `
+      `
     );
 
     return rows;
@@ -44,9 +45,9 @@ async function getLinkById(id) {
       rows: [link],
     } = await client.query(
       `
-      SELECT * FROM links
-      WHERE id = $1;
-    `,
+        SELECT * FROM links
+        WHERE id = $1;
+      `,
       [id]
     );
 
@@ -56,13 +57,33 @@ async function getLinkById(id) {
   }
 }
 
+async function updateLink(id, fields = {}) {
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${key}"=$${index + 1}`
+  );
+
+  try {
+    await client.query(
+      `
+        UPDATE links
+        SET ${setString}
+        WHERE id=${id}
+        RETURNING *;
+      `,
+      Object.values(fields)
+    );
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function destroyLink(id) {
   try {
     await client.query(
       `
-      DELETE FROM link_tags
-      WHERE "linksId" = $1;
-    `,
+        DELETE FROM link_tags
+        WHERE "linksId" = $1;
+      `,
       [id]
     );
 
@@ -70,9 +91,9 @@ async function destroyLink(id) {
       rows: [link],
     } = await client.query(
       `
-      DELETE FROM links
-      WHERE id = $1;
-    `,
+        DELETE FROM links
+        WHERE id = $1;
+      `,
       [id]
     );
 
@@ -88,10 +109,10 @@ async function createTag({ name }) {
       rows: [tag],
     } = await client.query(
       `
-      INSERT INTO tags(name)
-      VALUES($1)
-      RETURNING name
-    `,
+        INSERT INTO tags(name)
+        VALUES($1)
+        RETURNING name;
+      `,
       [name]
     );
 
@@ -121,10 +142,10 @@ async function createLinkTags({ linksId, tagsId }) {
       rows: [linkTag],
     } = await client.query(
       `
-      INSERT INTO link_tags("linksId", "tagsId")
-      VALUES($1, $2)
-      RETURNING *;
-    `,
+        INSERT INTO link_tags("linksId", "tagsId")
+        VALUES($1, $2)
+        RETURNING *;
+      `,
       [linksId, tagsId]
     );
 
@@ -138,12 +159,12 @@ async function getLinksWithTags(linksId) {
   try {
     const { rows } = await client.query(
       `
-      SELECT links.url, links.clickCount, links.comment, links.date, tags.name AS tagName
-      FROM link_tags
-      JOIN links ON link_tags."linksId" = links.id
-      JOIN tags ON link_tags."tagsId" = tags.id
-      WHERE links.id = $1;
-    `,
+        SELECT links.url, links.clickCount, links.comment, links.date, tags.name AS tagName
+        FROM link_tags
+        JOIN links ON link_tags."linksId" = links.id
+        JOIN tags ON link_tags."tagsId" = tags.id
+        WHERE links.id = $1;
+      `,
       [linksId]
     );
 
@@ -159,6 +180,7 @@ module.exports = {
   createLink,
   getLinks,
   getLinkById,
+  updateLink,
   destroyLink,
   createTag,
   getTags,

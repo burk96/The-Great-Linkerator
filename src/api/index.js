@@ -1,16 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
 export async function getLinks() {
   try {
-    let { data } = await axios.get("/api/links");
+    let { data } = await axios.get('/api/links');
 
     //Gotta admit, I really don't like this
     //I've had so many problems with function
     //I've rewritten it multiple times and it just gets worse...
     data.forEach(async (link) => {
       const [result] = await getLinksWithTags(link.id);
-      const { tagname } = result || "None";
-      link.tags = tagname ? tagname : "None";
+      const { tagname } = result || 'None';
+      link.tags = tagname ? tagname : 'None';
     });
 
     return data;
@@ -21,7 +21,7 @@ export async function getLinks() {
 
 export async function getTags() {
   try {
-    const { data } = await axios.get("/api/tags");
+    const { data } = await axios.get('/api/tags');
 
     return data;
   } catch (error) {
@@ -45,9 +45,21 @@ export async function createLink(url, comment) {
       return false;
     }
 
-    await axios.post("/api/links", { url, comment });
+    await axios.post('/api/links', { url, comment });
 
     return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function incrementClickCount(id, clickcount) {
+  clickcount++;
+
+  try {
+    const { data } = await axios.patch(`/api/links/${id}`, { clickcount });
+
+    return data;
   } catch (error) {
     throw error;
   }
@@ -59,7 +71,7 @@ export async function createTag(name) {
       return false;
     }
 
-    await axios.post("/api/tags", { name });
+    await axios.post('/api/tags', { name });
 
     return true;
   } catch (error) {
