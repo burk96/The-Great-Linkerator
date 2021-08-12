@@ -66,7 +66,7 @@ const Links = (props) => {
                 <CardSubtitle>Comment: {link.comment}</CardSubtitle>
                 <hr />
                 <CardText>Clicks: {link.clickcount}</CardText>
-                <CardText>Date: {link.date}</CardText>
+                <CardText>Date: {link.date.split('T')[0]}</CardText>
                 <CardText>Tags: {link.tags}</CardText>
               </CardBody>
             </Card>

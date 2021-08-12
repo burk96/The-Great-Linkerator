@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function getLinks() {
   try {
-    let { data } = await axios.get('/api/links');
+    const { data } = await axios.get('/api/links');
 
     await Promise.all(
       data.map(async (link) => {
@@ -71,6 +71,20 @@ export async function createTag(name) {
     }
 
     await axios.post('/api/tags', { name });
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function createLinkLinkTags(linkId, tagId) {
+  try {
+    if (!linkId || !tagId) {
+      return false;
+    }
+
+    await axios.post('/api/linktags', { linkId, tagId });
 
     return true;
   } catch (error) {

@@ -59,6 +59,14 @@ apiRouter.post('/tags', async (req, res, next) => {
   res.send(result);
 });
 
+apiRouter.post('/linktags/', async (req, res, next) => {
+  const { linkId, tagId } = req.body;
+
+  const result = await createLinkTags({ linkId, tagId });
+
+  res.send(result);
+});
+
 //PATCH
 apiRouter.patch('/links/:id', async (req, res) => {
   const { id } = req.params;
