@@ -61,7 +61,7 @@ apiRouter.post('/tags', async (req, res, next) => {
 
 apiRouter.post('/linktags/', async (req, res, next) => {
   const { linkId, tagId } = req.body;
-
+  console.log(linkId, tagId);
   const result = await createLinkTags({ linkId, tagId });
 
   res.send(result);

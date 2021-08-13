@@ -78,8 +78,9 @@ export async function createTag(name) {
   }
 }
 
-export async function createLinkLinkTags(linkId, tagId) {
+export async function createLinkTags(linkId, tagId) {
   try {
+    console.log(linkId, tagId);
     if (!linkId || !tagId) {
       return false;
     }

@@ -136,7 +136,7 @@ async function getTags() {
   }
 }
 
-async function createLinkTags({ linksId, tagsId }) {
+async function createLinkTags({ linkId, tagId }) {
   try {
     const {
       rows: [linkTag],
@@ -146,7 +146,7 @@ async function createLinkTags({ linksId, tagsId }) {
         VALUES($1, $2)
         RETURNING *;
       `,
-      [linksId, tagsId]
+      [linkId, tagId]
     );
 
     return linkTag;
