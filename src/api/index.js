@@ -31,6 +31,7 @@ export async function getTags() {
 export async function getLinksWithTags(id) {
   try {
     const { data } = await axios.get(`/api/links/${id}`);
+    console.log(data);
 
     return data;
   } catch (error) {

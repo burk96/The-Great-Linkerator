@@ -17,6 +17,8 @@ const AddLinkTag = ({
   setShowAddLinkTag,
   selectedLink,
   setSelectedLink,
+  refresh,
+  setRefresh,
 }) => {
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState();
@@ -36,13 +38,14 @@ const AddLinkTag = ({
     console.log('tagId', tagId);
 
     try {
-      const res = await createLinkTags(selectedLink.id, tagId + 1);
+      const res = await createLinkTags(selectedLink.id, Number(tagId) + 1);
       console.log(res);
     } catch (error) {
       console.error(error);
     }
 
     handleClose();
+    setRefresh(!refresh);
   };
 
   useEffect(() => {

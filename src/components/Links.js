@@ -33,6 +33,7 @@ const Links = (props) => {
         setLinks(links);
       })
       .catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refresh]);
 
   return (
@@ -76,14 +77,18 @@ const Links = (props) => {
                   <CardText>Clicks: {link.clickcount}</CardText>
                   <CardText>Date: {link.date.split('T')[0]}</CardText>
                   <CardText>Tags: {link.tags}</CardText>
-                  <Button
-                    onClick={() => {
-                      setSelectedLink(link);
-                      handleShowAddLinkTag();
-                    }}
-                  >
-                    Add Tag
-                  </Button>
+                  {link.tags === 'None' ? (
+                    <Button
+                      onClick={() => {
+                        setSelectedLink(link);
+                        handleShowAddLinkTag();
+                      }}
+                    >
+                      Add Tag
+                    </Button>
+                  ) : (
+                    ''
+                  )}
                 </CardBody>
               </Card>
             );
@@ -94,6 +99,8 @@ const Links = (props) => {
         setShowAddLinkTag={setShowAddLinkTag}
         selectedLink={selectedLink}
         setSelectedLink={setSelectedLink}
+        refresh={refresh}
+        setRefresh={setRefresh}
       />
     </>
   );
